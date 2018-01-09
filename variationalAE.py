@@ -1,6 +1,6 @@
 """Variational Autoencoder over MNIST dataset.
 The code has largely been taken from https://github.com/keras-team/keras/blob/master/examples/variational_autoencoder.py
-   This script demonstrates how to build a variational autoencoder with Keras.
+This script demonstrates how to build a variational autoencoder with Keras.
  #Reference
  - Auto-Encoding Variational Bayes
    https://arxiv.org/abs/1312.6114
@@ -66,7 +66,7 @@ y = CustomVariationalLayer()([x, x_decoded_mean])
 vae = Model(x, y)
 vae.compile(optimizer = "rmsprop", loss = None)
 
-# train the VAE on MNIST digits
+# Train the VAE on MNIST digits
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
 x_train = x_train.astype("float32") / 255.
@@ -80,27 +80,27 @@ vae.fit(x_train,
         batch_size = batch_size,
         validation_data = (x_test, None))
 
-# build a model to project inputs on the latent space
+# Build a model to project inputs on the latent space
 encoder = Model(x, z_mean)
 
-# display a 2D plot of the digit classes in the latent space
+# Display a 2D plot of the digit classes in the latent space
 x_test_encoded = encoder.predict(x_test, batch_size = batch_size)
 plt.figure(figsize = (6, 6))
 plt.scatter(x_test_encoded[:, 0], x_test_encoded[:, 1], c = y_test)
 plt.colorbar()
 plt.show()
 
-# build a digit generator that can sample from the learned distribution
+# Build a digit generator that can sample from the learned distribution
 decoder_input = Input(shape = (latent_dim,))
 _h_decoded = decoder_h(decoder_input)
 _x_decoded_mean = decoder_mean(_h_decoded)
 generator = Model(decoder_input, _x_decoded_mean)
 
-# display a 2D manifold of the digits
+# Display a 2D manifold of the digits
 n = 15  # figure with 15x15 digits
 digit_size = 28
 figure = np.zeros((digit_size * n, digit_size * n))
-# linearly spaced coordinates on the unit square were transformed through the inverse CDF (ppf) of the Gaussian
+# Linearly spaced coordinates on the unit square were transformed through the inverse CDF (ppf) of the Gaussian
 # to produce values of the latent variables z, since the prior of the latent space is Gaussian
 grid_x = norm.ppf(np.linspace(0.05, 0.95, n))
 grid_y = norm.ppf(np.linspace(0.05, 0.95, n))
